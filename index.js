@@ -24,6 +24,7 @@ app.get('*', function(req, res) {
 
 /* ARDUINO PART */
 app.post('/newGoal', function(req,res){
+  console.log(req)
   res.json({
           success: true,
           message: 'Enjoy your token!',
