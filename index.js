@@ -29,7 +29,7 @@ app.post('/newGoal', function(req,res){
           message: 'Enjoy your token!',
           token: "HelloWorld"
   });
-
+  console.log("Posted a Goal");
 });
 
 /* REAL TIME PART  */
