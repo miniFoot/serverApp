@@ -38,8 +38,12 @@ io.on('connection', function(socket){
   console.log('a user connected');
   io.sockets.emit( 'newConnection' );
 
-  socket.on('onNameChange', function(name){
-   console.log(name)
+  socket.on('onNameChange', function(msg){
+    for (var i = 0; i < msg.length; i++) {
+      if (msg[i].name != '') {
+        console.log(msg[i].name);
+      }
+    }
   });
 
   socket.on('onPlayerCall', function(msg){
