@@ -36,9 +36,10 @@ app.post('/newGoal', function(req,res){
 /* REAL TIME PART  */
 io.on('connection', function(socket){
   console.log('a user connected');
+  io.sockets.emit( 'newConnection' );
 
-  socket.on('onNameChange', function(msg){
-   console.log(msg)
+  socket.on('onNameChange', function(name){
+   console.log(name)
   });
 
   socket.on('onPlayerCall', function(msg){
