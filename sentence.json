@@ -53,5 +53,31 @@
     "C'est parti entre 🔵 blue_play1 et blue_play2 contre 🔴 red_play1 et red_play2 ! Deux équipes, pour un seul perchoir.",
     "Vamos ! La doublette 🔵 team1_play1 & team1_play2 affronte le duo de rêve 🔴 team2_play1 & team2_play2",
     "La foudroyante doublette 🔵 blue_play1 & blue_play2 affronte ce soir l'imprévisible duo 🔴 red_play1 et red_play2"
+  ],
+  "playerCall":[
+    "🔵 blue_play1 et blue_play2 défient ce soir 🔴 red_play1 et red_play2. Un vrai match de Champion's Tweet.",
+    "red_play1 & red_play2 VS blue_play1 & blue_play2, coup d'envoi imminent au Babyfoot !",
+    "red_play1 & red_play2 et blue_play1 & blue_play2, venez en découdre en Gaming Room !",
+    "red_play1 & red_play2 VS blue_play1 & blue_play2, l'heure de l'explication a sonné ! Allez régler ça au babyfoot !",
+    "red_play1 & red_play2 et blue_play1 & blue_play2, l'arbitre a le sifflet à la bouche, coup d'envoi imminent !",
+    "red_play1 & red_play2 VS blue_play1 & blue_play2, Le babyfoot vous attend ! à vos barres, prêts, tirez ! "
+  ],
+  "endOneGame":[
+    "Ce score est sans appel. Magnifique victoire de scoringteam_play1 contre losingteam_play1",
+    "Victoire écrasante scoringteam_play1  contre losingteam_play1. Il n'y avait qu'une seule équipe sur le terrain aujourd'hui.",
+    "Superbe victoire de scoringteam_play1 contre losingteam_play1. Et avec la manière s'il vous plait.",
+    "Nous venons d'assister au casse du siècle. Quel hold-up de scoringteam_play1. losingteam_play1 repart bredouille.",
+    "Au terme d'un match équilibré, la balance penche finalement du côté de scoringteam_play1 aux dépens de losingteam_play1.",
+    "Les Dieux du Babyfoot ont choisi leur camp ce soir. Victoire héroïque de scoringteam_play1 contre losingteam_play1.",
+    "Au terme d'un match âpre et disputé, scoringteam_play1 se défait de losingteam_play1. Quelle force mentale !"
+  ],
+  "endTwoGame" :[
+    "Match épique ! Victoire à l'arrachée de scoringteam_play1 scoringteam_play2 contre losingteam_play1 losingteam_play2",
+    "Les deux équipes ne pratiquaient pas le même sport. Victoire de scoringteam_play1 scoringteam_play2 vs losingteam_play1 losingteam_play2",
+    "Le score parle de lui-même. scoringteam_play1 scoringteam_play2 ont surclassé losingteam_play1 losingteam_play2",
+    "scoringteam_play1 scoringteam_play2 ont battu losingteam_play1 losingteam_play2. Au-delà du score, c'est le sport du Babyfoot qui en sort grandi.",
+    "À l'issue d'une rencontre homérique, scoringteam_play1 et scoringteam_play2 font capituler losingteam_play1 et losingteam_play2.",
+    "scoringteam_play1 et scoringteam_play2 ? Une paire sans pitié qui a dévoré losingteam_play1 et losingteam_play2. Un carnage."
+
   ]
 }
