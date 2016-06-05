@@ -23,10 +23,9 @@ var port = process.env.PORT || 8080;
 
 var lastBut;
 var lastGoalRed, lastGoalBlue;
-var teamOne = ["",""];
-var teamTwo = ["",""];
 var blueScore = 0;
 var redScore = 0;
+var playing = false;
 var player = [
           this.one = {
             name : ""
@@ -48,24 +47,24 @@ var str = "I have a cat, a dog, and a goat.";
 var replacePlayer = function(sentenceTw){
   if(lastGoalRed){
     var mapObj = {
-     red_play1: "@"+ player[1].name,
+     red_play1: "@"+ player[2].name,
      red_play2:"@"+ player[3].name,
      blue_play1: "@"+ player[0].name,
-     blue_play2: "@"+ player[2].name,
-     scoringteam_play1 :"@"+ player[1].name,
+     blue_play2: "@"+ player[1].name,
+     scoringteam_play1 :"@"+ player[2].name,
      scoringteam_play2 :"@"+ player[3].name ,
      loosingteam_play1 : "@"+ player[0].name,
-     loosingteam_play2 : "@"+ player[2].name
+     loosingteam_play2 : "@"+ player[1].name
     };
   }else{
     var mapObj = {
-     red_play1: "@"+ player[1].name,
+     red_play1: "@"+ player[2].name,
      red_play2:"@"+ player[3].name,
      blue_play1: "@"+ player[0].name,
-     blue_play2: "@"+ player[2].name,
+     blue_play2: "@"+ player[1].name,
      scoringteam_play1 :"@"+ player[0].name,
-     scoringteam_play2 :"@"+ player[2].name ,
-     loosingteam_play1 : "@"+ player[1].name,
+     scoringteam_play2 :"@"+ player[1].name ,
+     loosingteam_play1 : "@"+ player[2].name,
      loosingteam_play2 : "@"+ player[3].name
     };
   }
@@ -73,9 +72,9 @@ var replacePlayer = function(sentenceTw){
   sentenceTw = sentenceTw.replace(re, function(matched){
     return mapObj[matched];
   });
-  return  "🔵" + blueScore + " - " + redScore + "🔴" + sentenceTw
+  return  sentenceTw;
 }
-console.log(tw);
+
 var T = new Twit({
   consumer_key:         '...',
   consumer_secret:      '...',
@@ -92,19 +91,18 @@ app.get('*', function(req, res) {
 
 /* ARDUINO PART */
 
-
+var jsonParser = bodyParser.json()
+app.use(bodyParser.json({ type: 'application/*+json' }));
 
 /* REAL TIME PART  */
 io.on('connection', function(socket){
   console.log('a user connected');
   io.sockets.emit( 'newConnection' );
 
-  app.post('/newgoal', function(req,res){
+  app.post('/newgoal',jsonParser, function(req,res){
     console.log(req.body);
-    res.json({
-            success: true,
-            message: 'All is fine'
-    });
+
+
     if(req.body.redGoal>0){
       redScore += 1;
       lastGoalRed =true;
@@ -113,17 +111,24 @@ io.on('connection', function(socket){
       lastGoalRed =false ;
     }
 
-    if(redScore>= 10 ){
-      if(player.three!=""){
-        var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
-        var tw = replacePlayer(newTwit);
+    if(player[1].name !=""){
+      var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
+      var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+      T.post('statuses/update', { status:tw}, function(err, data, response) {
+      })
+    }else{
+        var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
+        var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+        console.log(tw);
         T.post('statuses/update', { status:tw}, function(err, data, response) {
         })
       }
-    }
     console.log("Posted a Goal");
     lastBut = Date.now();
-
+    res.json({
+            success: true,
+            message: 'All is fine'
+    });
   });
 
 
@@ -131,20 +136,23 @@ io.on('connection', function(socket){
   socket.on('onNameChange', function(msg){
    console.log("Name Changed")
     for (var i = 0; i < msg.length; i++) {
-
         player[i].name = msg[i].name;
-
     }
-    if(player[2]!=""){
-      var newTwit = sentences.launchTwo[(Math.random() * sentences.launchTwo.length) |0];
+
+    if(player[1].name!= "" && player[3].name!= ""){
+      var newTwit = sentences.launchTwo[( Math.random() * sentences.launchTwo.length) |0];
       var tw = replacePlayer(newTwit);
+      //  console.log("player 1 : "+ player[1] +" !");
       console.log(tw);
+
+      //console.log(( Math.random() * sentences.launchTwo.length) |0);
       T.post('statuses/update', { status:tw}, function(err, data, response) {
         //console.log(data)
       })
     }else{
       var newTwit = sentences.launchOne[(Math.random() * sentences.launchOne.length) |0];
       var tw = replacePlayer(newTwit);
+        console.log(tw);
       T.post('statuses/update', { status:tw}, function(err, data, response) {
       //  console.log(data)
       })
@@ -156,7 +164,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('onStartMatch', function(msg){
-
+    playing = true;
 
 
   });
@@ -175,6 +183,7 @@ io.on('connection', function(socket){
    console.log(msg)
     redScore = 0 ;
     blueScore = 0 ;
+    playing = false;
   });
 
 });
