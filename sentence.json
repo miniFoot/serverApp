@@ -14,7 +14,7 @@
     "Roulette ? Pas pour l'arbitre, qui accorde le but à scoring_team_play1 et scoring_team_play2 sous les sifflets. ",
     "Ça combine bien entre scoring_team_play1 et scoring_team_play2. C'est fluide et ça va au bout !"
   ],
-  "2min":[
+  "twoMin":[
     "Le catenaccio a encore de de beaux jours devant lui. Quelle équipe fera sauter le verrou adverse ?",
     "Ils vont tenter la catapulte infernale d'Olive et Tom.",
     "Je me suis laissé entendre dire que red_play1 était sorti hier soir ... mais cela ne nous regarde pas. ",
@@ -26,7 +26,7 @@
     "Il ne se passe rien. Je crois même que l'entraîneur est parti se faire une gaufre.",
     "red_play2 l'a jouée à l'italienne... le fameux auto-croc-en-jambe."
   ],
-  "1v1":[
+  "oneVone":[
     "Quel pétard de scoring_team_play1 ! Un réel leader technique son équipe.",
     "Quel amour de frappe enveloppée inscrit par scoring_team_play1 ! Titi Henry appréciera le geste.",
     "C'est la Bérézina... losing_team passe à côté de son match, à l'image de losingteam_play1 complètement éteint ce soir.",
@@ -42,13 +42,13 @@
     "Seule la corruption peut expliquer le nombre affolant de buts que losing_team_play1 encaisse...",
     "Encore un but digne de Vidéo gag encaissé par losing_team_play1"
   ],
-  "lunch1v1":[
+  "launchOne":[
     " C'est parti ! L'équipe menée par 🔵 blue_play1 affronte l'équipe de 🔴 red_play1. Quelle opposition de styles !",
     "🔵 blue_play1 et 🔴 red_play1 donnent le coup d'envoi d'une rencontre qui s'annonce historique ! ",
     "Oh là là ! Ce mano à mano entre 🔵 blue_play1 et 🔴 red_play1 s'annonce dantesque !",
     "🔵 blue_play1 et 🔴 red_play1 donnent le coup d'envoi d'un match au sommet... Malheur au perdant. La chute n'en sera que plus rude."
   ],
-  "launch2v2":[
+  "launchTwo":[
     "Quel duel de regards entre 🔵 blue_play1 et 🔴 red_play1 pour le coup d'envoi... Cette rencontre promêt d'être électrique !",
     "C'est parti entre 🔵 blue_play1 et blue_play2 contre 🔴 red_play1 et red_play2 ! Deux équipes, pour un seul perchoir.",
     "Vamos ! La doublette 🔵 team1_play1 & team1_play2 affronte le duo de rêve 🔴 (team2_play1 & team2_play2)",
