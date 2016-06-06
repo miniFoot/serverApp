@@ -120,7 +120,7 @@ io.on('connection', function(socket){
         blueScore +=1;
         lastGoalRed =false ;
       }
-      if(blueScore < 10 || redScore < 10){
+      if(blueScore < 10 && redScore < 10){
         if(player[1].name !=""){
           var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
@@ -149,14 +149,16 @@ io.on('connection', function(socket){
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           T.post('statuses/update', { status:tw}, function(err, data, response) {
           })
-          io.sockets.emit('onStopMatch', true);
+          console.log('stopMatch');
+          io.sockets.emit('onStopMatch');
         }else{
           var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
             console.log(tw);
             T.post('statuses/update', { status:tw}, function(err, data, response) {
             })
-            io.sockets.emit('onStopMatch', true);
+            console.log('stopMatch');
+            io.sockets.emit('onStopMatch');
           }
       }
 
@@ -194,6 +196,47 @@ io.on('connection', function(socket){
 
   socket.on('onScoreChanged', function(msg){
    console.log(msg)
+   if(msg = "plus red"){
+     redScore+=1;
+     lastGoalRed =true;
+     if(redScore >= 10 && player[1].name != ""){
+       var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       T.post('statuses/update', { status:tw}, function(err, data, response) {
+       })
+       io.emit('onStopMatch');
+     }else if(redScore >= 10 ){
+       var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       T.post('statuses/update', { status:tw}, function(err, data, response) {
+       })
+       io.emit('onStopMatch');
+     }
+   }
+   if(msg = "minus red" && redScore > 0){
+     redScore+=1;
+   }
+   if(msg = "plus blue"){
+      blueScore+=1;
+      lastGoalRed =false;
+     if(blueScore >= 10 && player[1].name != ""){
+       var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       T.post('statuses/update', { status:tw}, function(err, data, response) {
+       })
+       io.emit('onStopMatch');
+     }else if(blueScore >= 10 ){
+       var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       T.post('statuses/update', { status:tw}, function(err, data, response) {
+       })
+       io.emit('onStopMatch');
+     }
+   }
+   if(msg = "minus blue" && blueScore > 0){
+     blueScore+=1;
+   }
+
   });
 
   socket.on('onStartMatch', function(msg){
