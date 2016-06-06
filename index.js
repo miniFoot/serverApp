@@ -104,7 +104,7 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 /* REAL TIME PART  */
 io.on('connection', function(socket){
   console.log('a user connected');
-  
+
   io.sockets.emit( 'newConnection' );
 
   app.post('/newgoal',jsonParser, function(req,res){
@@ -167,6 +167,10 @@ io.on('connection', function(socket){
   });
 
   socket.on('onPlayerCall', function(msg){
+   console.log(msg)
+  });
+
+  socket.on('onScoreChanged', function(msg){
    console.log(msg)
   });
 
