@@ -105,7 +105,7 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 io.on('connection', function(socket){
   console.log('a user connected');
 
-  io.sockets.emit( 'newConnection' );
+  io.sockets.emit('newConnection');
 
   app.post('/newgoal',jsonParser, function(req,res){
     console.log(req.body);
@@ -157,8 +157,6 @@ io.on('connection', function(socket){
     });
   });
 
-
-
   socket.on('onNameChange', function(msg){
    console.log("Name Changed")
     for (var i = 0; i < msg.length; i++) {
@@ -195,15 +193,18 @@ io.on('connection', function(socket){
     }
   });
   socket.on('onGoal', function(msg){
-    if(redScore>= 10 || blueScore >= 10 ){
+    socket.emit('addGoal', 'blue', 'phrase a inserer')
+
+    if(redScore >= 10 || blueScore >= 10 ){
         redScore = 0 ;
         blueScore = 0 ;
         playing = false;
         socket.emit('onStopMatch', function(msg){
-       console.log(msg)
-      });
+          console.log(msg)
+        });
     }
   });
+
   socket.on('onStopMatch', function(msg){
    console.log(msg)
     redScore = 0 ;
