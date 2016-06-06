@@ -43,7 +43,7 @@ var player = [
           }
         ]
 
-var str = "I have a cat, a dog, and a goat.";
+var playerCallCounter = 0;
 
 
 var replacePlayer = function(sentenceTw){
@@ -165,7 +165,14 @@ io.on('connection', function(socket){
   });
 
   socket.on('onPlayerCall', function(msg){
-   console.log(msg)
+    if(player[1].name!= "" && player[3].name!= ""){
+      var newTwit = sentences.playerCall[playerCallCounter];
+      playerCallCounter = (playerCallCounter + 1)%sentences.playerCall.length;
+      var tw = replacePlayer(newTwit);
+      console.log(playerCallCounter);
+      T.post('statuses/update', { status:tw}, function(err, data, response) {
+      })
+    }
   });
 
   socket.on('onScoreChanged', function(msg){
