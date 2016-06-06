@@ -191,14 +191,14 @@ io.on('connection', function(socket){
       var tw = replacePlayer(newTwit);
       console.log(playerCallCounter);
       T.post('statuses/update', { status:tw}, function(err, data, response) {
-        console.log(data);
+        console.log(response);
       })
     }
   });
 
   socket.on('onScoreChanged', function(msg){
    console.log(msg)
-   if(msg = "plus red"){
+   if(msg == "plus red"){
      redScore+=1;
      lastGoalRed =true;
      if(redScore >= 10 && player[1].name != ""){
@@ -217,10 +217,11 @@ io.on('connection', function(socket){
        resetMatch();
      }
    }
-   if(msg = "minus red" && redScore > 0){
-     redScore+=1;
+   if(msg == "minus red" && redScore > 0){
+     lastGoalRed =false;
+     redScore -=1;
    }
-   if(msg = "plus blue"){
+   if(msg == "plus blue"){
       blueScore+=1;
       lastGoalRed =false;
      if(blueScore >= 10 && player[1].name != ""){
@@ -239,8 +240,9 @@ io.on('connection', function(socket){
        resetMatch();
      }
    }
-   if(msg = "minus blue" && blueScore > 0){
-     blueScore+=1;
+   if(msg == "minus blue" && blueScore > 0){
+     lastGoalRed =true;
+     blueScore-=1;
    }
 
   });
