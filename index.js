@@ -97,7 +97,12 @@ function postTwoMin() {
       console.log(err);
     })
 }
-
+var resetMatch = function(){
+  redScore = 0 ;
+  blueScore = 0 ;
+  playing = false;
+  clearInterval(noAction);
+}
 var jsonParser = bodyParser.json()
 app.use(bodyParser.json({ type: 'application/*+json' }));
 
@@ -179,10 +184,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('onPlayerCall', function(msg){
-    redScore = 0 ;
-    blueScore = 0 ;
-    playing = false;
-    clearInterval(noAction);
+    resetMatch();
     if(player[1].name!= "" && player[3].name!= ""){
       var newTwit = sentences.playerCall[playerCallCounter];
       playerCallCounter = (playerCallCounter + 1)%sentences.playerCall.length;
@@ -205,12 +207,14 @@ io.on('connection', function(socket){
        T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
        io.emit('onStopMatch');
+       resetMatch();
      }else if(redScore >= 10 ){
        var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
        var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
        io.emit('onStopMatch');
+       resetMatch();
      }
    }
    if(msg = "minus red" && redScore > 0){
@@ -225,12 +229,14 @@ io.on('connection', function(socket){
        T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
        io.emit('onStopMatch');
+       resetMatch();
      }else if(blueScore >= 10 ){
        var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
        var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
        io.emit('onStopMatch');
+       resetMatch();
      }
    }
    if(msg = "minus blue" && blueScore > 0){
@@ -263,9 +269,7 @@ io.on('connection', function(socket){
   });
   socket.on('onGoal', function(msg){
     if(redScore >= 10 || blueScore >= 10 ){
-        redScore = 0 ;
-        blueScore = 0 ;
-        playing = false;
+        resetMatch();
         socket.emit('onStopMatch', function(msg){
           console.log(msg)
         });
@@ -274,10 +278,7 @@ io.on('connection', function(socket){
 
   socket.on('onStopMatch', function(msg){
    console.log(msg)
-    redScore = 0 ;
-    blueScore = 0 ;
-    playing = false;
-    clearInterval(noAction);
+    resetMatch();
   });
 });
 
