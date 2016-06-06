@@ -57,7 +57,7 @@ var replacePlayer = function(sentenceTw){
      scoringteam_play2 :"@"+ player[3].name ,
      loosingteam_play1 : "@"+ player[0].name,
      loosingteam_play2 : "@"+ player[1].name,
-     loosing_team : "Team Bleu"
+     loosingteam : "Team Bleu"
     };
   }else{
     var mapObj = {
@@ -69,7 +69,7 @@ var replacePlayer = function(sentenceTw){
      scoringteam_play2 :"@"+ player[1].name ,
      loosingteam_play1 : "@"+ player[2].name,
      loosingteam_play2 : "@"+ player[3].name,
-     loosing_team : "Team Rouge"
+     loosingteam : "Team Rouge"
     };
   }
   var re = new RegExp(Object.keys(mapObj).join("|"),"gi");
