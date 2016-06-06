@@ -108,8 +108,8 @@ io.on('connection', function(socket){
   io.sockets.emit('newConnection');
 
   app.post('/newgoal',jsonParser, function(req,res){
-    console.log(req.body);
     if(playing){
+      console.log(req.body);
       clearInterval(noAction);
 
       noAction = setInterval(postTwoMin, 120000);
@@ -124,12 +124,22 @@ io.on('connection', function(socket){
         if(player[1].name !=""){
           var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+          if(lastGoalRed){
+            io.sockets.emit('addGoal', 'red', tw);
+          }else{
+            io.sockets.emit('addGoal', 'blue', tw);
+          }
           T.post('statuses/update', { status:tw}, function(err, data, response) {
           })
         }else{
           var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           console.log(tw);
+          if(lastGoalRed){
+            io.sockets.emit('addGoal', 'red', tw);
+          }else{
+            io.sockets.emit('addGoal', 'blue', tw);
+          }
           T.post('statuses/update', { status:tw}, function(err, data, response) {
           })
         }
@@ -139,12 +149,14 @@ io.on('connection', function(socket){
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           T.post('statuses/update', { status:tw}, function(err, data, response) {
           })
+          io.sockets.emit('onStopMatch', true);
         }else{
           var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
             console.log(tw);
             T.post('statuses/update', { status:tw}, function(err, data, response) {
             })
+            io.sockets.emit('onStopMatch', true);
           }
       }
 
@@ -165,12 +177,17 @@ io.on('connection', function(socket){
   });
 
   socket.on('onPlayerCall', function(msg){
+    redScore = 0 ;
+    blueScore = 0 ;
+    playing = false;
+    clearInterval(noAction);
     if(player[1].name!= "" && player[3].name!= ""){
       var newTwit = sentences.playerCall[playerCallCounter];
       playerCallCounter = (playerCallCounter + 1)%sentences.playerCall.length;
       var tw = replacePlayer(newTwit);
       console.log(playerCallCounter);
       T.post('statuses/update', { status:tw}, function(err, data, response) {
+        console.log(data);
       })
     }
   });
@@ -180,17 +197,19 @@ io.on('connection', function(socket){
   });
 
   socket.on('onStartMatch', function(msg){
-    playing = true;
+    console.log("StartMatch");
     if(player[1].name!= "" && player[3].name!= ""){
+      playing = true;
       var newTwit = sentences.launchTwo[( Math.random() * sentences.launchTwo.length) |0];
       var tw = replacePlayer(newTwit);
       //  console.log("player 1 : "+ player[1] +" !");
       console.log(tw);
       //console.log(( Math.random() * sentences.launchTwo.length) |0);
       T.post('statuses/update', { status:tw}, function(err, data, response) {
-        //console.log(data)
+        console.log(data);
       })
     }else{
+      playing = true;
       var newTwit = sentences.launchOne[(Math.random() * sentences.launchOne.length) |0];
       var tw = replacePlayer(newTwit);
         console.log(tw);
@@ -200,8 +219,6 @@ io.on('connection', function(socket){
     }
   });
   socket.on('onGoal', function(msg){
-    socket.emit('addGoal', 'blue', 'phrase a inserer')
-
     if(redScore >= 10 || blueScore >= 10 ){
         redScore = 0 ;
         blueScore = 0 ;
