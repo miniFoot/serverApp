@@ -133,9 +133,9 @@ io.on('connection', function(socket){
           var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           if(lastGoalRed){
-            socket.emit('addGoal', 'red', tw);
+            io.sockets.emit('addGoal', 'red', tw);
           }else{
-            socket.emit('addGoal', 'blue', tw);
+            io.sockets.emit('addGoal', 'blue', tw);
           }
           T.post('statuses/update', { status:tw}, function(err, data, response) {
             lastTweetId = data.id_str;
@@ -145,9 +145,9 @@ io.on('connection', function(socket){
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           console.log(tw);
           if(lastGoalRed){
-            socket.emit('addGoal', 'red', tw);
+            io.sockets.emit('addGoal', 'red', tw);
           }else{
-            socket.emit('addGoal', 'blue', tw);
+            io.sockets.emit('addGoal', 'blue', tw);
           }
           T.post('statuses/update', { status:tw}, function(err, data, response) {
             lastTweetId = data.id_str;
