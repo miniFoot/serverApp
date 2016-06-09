@@ -80,10 +80,10 @@ var replacePlayer = function(sentenceTw){
 }
 
 var T = new Twit({
-  consumer_key:'KSnCcL4t9wNW24VFAiTBAvIaI',
-  consumer_secret:'eVQWE3r0SNegmzuLjGF6yNCi5P1gET2m0ubzHAzjS3ETsZK7S3',
-  access_token:'4233599248-F53AffpRmeKg1logorij9OWeSNkFLAcX6ODHNYh',
-  access_token_secret:  'dbzF7KZMGvc49McFbM1oFqMwoLge6GHqy9tj6mSNkG3vY'
+  consumer_key:'kEx99TjpVf1z8q7AvbBxmTVkr',
+  consumer_secret:'tsahrZC8wdSZZZQPjf8nrhPtMeeFyJPqSBNrEbKhFmimFrO7M7',
+  access_token:'4233599248-cQXolphthEommNWsf0GWanji8MhKjVQjR64ufYC',
+  access_token_secret:  'DiuGboA1HYnODXEYHaF2sn4Ahr8w4851Qgc4wQS3ToemP'
 });
 /* WEB PART */
 app.get('*', function(req, res) {
@@ -115,9 +115,11 @@ io.on('connection', function(socket){
 
   app.post('/newgoal',jsonParser, function(req,res){
     if(playing){
+      console.log(req);
+      console.log(" my body ");
       console.log(req.body);
-      clearInterval(noAction);
 
+      clearInterval(noAction);
       noAction = setInterval(postTwoMin, 120000);
       if(req.body.redGoal>0){
         redScore += 1;
@@ -156,6 +158,7 @@ io.on('connection', function(socket){
           var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           T.post('statuses/update', { status:tw}, function(err, data, response) {
+
           })
           console.log('stopMatch');
           socket.emit('onStopMatch');
@@ -219,7 +222,7 @@ io.on('connection', function(socket){
      }else if(redScore >= 10 && player[1].name != ""){
        var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
        var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
-       T.post('statuses/update', { status:tw}, function(err, data, response) {
+        T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
        resetMatch();
        socket.emit('onStopMatch');
@@ -237,11 +240,10 @@ io.on('connection', function(socket){
    }
    if(msg == "minus red" && redScore > 0){
      lastGoalRed =false;
-     if(lastTweetId != ""){
-      //  T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
-      //     console.log(data);
-      //   })
-      console.log(lastTweetId);
+     if(lastTweetId != " "){
+       T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
+         })
+      console.log("TwId " + lastTweetId);
       }
      redScore -=1;
    }
@@ -279,11 +281,10 @@ io.on('connection', function(socket){
    }
    if(msg == "minus blue" && blueScore > 0){
      lastGoalRed =true;
-     if(lastTweetId != ""){
-      //  T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
-      //     console.log("deleted")
-      //   })
-      console.log(lastTweetId);
+     if(lastTweetId != " "){
+       T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
+         })
+      console.log("TwId " + lastTweetId);
     }
      blueScore-=1;
    }
@@ -295,6 +296,7 @@ io.on('connection', function(socket){
     resetMatch();
     if(player[1].name!= "" && player[3].name!= ""){
       playing = true;
+      lastTweetId = " ";
       var newTwit = sentences.launchTwo[( Math.random() * sentences.launchTwo.length) |0];
       var tw = replacePlayer(newTwit);
       //  console.log("player 1 : "+ player[1] +" !");
