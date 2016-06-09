@@ -110,7 +110,7 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 io.on('connection', function(socket){
   console.log('a user connected');
 
-  io.sockets.emit('newConnection');
+  socket.emit('newConnection');
 
   app.post('/newgoal',jsonParser, function(req,res){
     if(playing){
@@ -130,9 +130,9 @@ io.on('connection', function(socket){
           var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           if(lastGoalRed){
-            io.sockets.emit('addGoal', 'red', tw);
+            socket.emit('addGoal', 'red', tw);
           }else{
-            io.sockets.emit('addGoal', 'blue', tw);
+            socket.emit('addGoal', 'blue', tw);
           }
           T.post('statuses/update', { status:tw}, function(err, data, response) {
           })
@@ -141,9 +141,9 @@ io.on('connection', function(socket){
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
           console.log(tw);
           if(lastGoalRed){
-            io.sockets.emit('addGoal', 'red', tw);
+            socket.emit('addGoal', 'red', tw);
           }else{
-            io.sockets.emit('addGoal', 'blue', tw);
+            socket.emit('addGoal', 'blue', tw);
           }
           T.post('statuses/update', { status:tw}, function(err, data, response) {
           })
@@ -155,7 +155,7 @@ io.on('connection', function(socket){
           T.post('statuses/update', { status:tw}, function(err, data, response) {
           })
           console.log('stopMatch');
-          io.sockets.emit('onStopMatch');
+          socket.emit('onStopMatch');
         }else{
           var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
           var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
@@ -163,7 +163,7 @@ io.on('connection', function(socket){
             T.post('statuses/update', { status:tw}, function(err, data, response) {
             })
             console.log('stopMatch');
-            io.sockets.emit('onStopMatch');
+            socket.emit('onStopMatch');
           }
       }
 
