@@ -45,6 +45,8 @@ var player = [
 
 var playerCallCounter = 0;
 var playerCallOneCounter = 0;
+var goalOneCounter = 0;
+var goalTwoCounter = 0;
 
 var replacePlayer = function(sentenceTw){
   if(lastGoalRed){
@@ -129,7 +131,9 @@ io.on('connection', function(socket){
       }
       if(blueScore < 10 && redScore < 10){
         if(player[1].name != ""){
-          var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
+          //var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
+          var newTwit = sentences.twoVtwo[goalTwoCounter];
+          goalTwoCounter = (goalTwoCounter + 1)%sentences.twoVtwo.length;
           var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
           console.log(tw);
           if(lastGoalRed){
@@ -141,7 +145,8 @@ io.on('connection', function(socket){
             lastTweetId = data.id_str;
           })
         }else{
-          var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
+          var newTwit = sentences.oneVone[goalOneCounter];
+          goalOneCounter = (goalOneCounter + 1)%sentences.oneVone.length;
           var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
           console.log(tw);
           if(lastGoalRed){
@@ -220,7 +225,8 @@ io.on('connection', function(socket){
      redScore+=1;
      lastGoalRed =true;
      if(redScore < 10 && player[1].name != ""){
-       var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
+       var newTwit = sentences.twoVtwo[goalTwoCounter];
+       goalTwoCounter = (goalTwoCounter + 1)%sentences.twoVtwo.length;
        var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
        console.log(tw);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
@@ -228,7 +234,8 @@ io.on('connection', function(socket){
        })
 
      }else if(redScore < 10 && player[1].name == ""  ){
-       var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
+       var newTwit = sentences.oneVone[goalOneCounter];
+       goalOneCounter = (goalOneCounter + 1)%sentences.oneVone.length;
        var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
        console.log(tw);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
@@ -237,6 +244,7 @@ io.on('connection', function(socket){
      }else if(redScore >= 10 && player[1].name != ""){
        var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
        var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+
        console.log(tw);
         T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
@@ -268,14 +276,17 @@ io.on('connection', function(socket){
       blueScore+=1;
       lastGoalRed =false;
       if(blueScore < 10 && player[1].name != ""){
-        var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
+        var newTwit = sentences.twoVtwo[goalTwoCounter];
+        goalTwoCounter = (goalTwoCounter + 1)%sentences.twoVtwo.length;
         var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
         console.log(tw);
+
         T.post('statuses/update', { status:tw}, function(err, data, response) {
           lastTweetId = data.id_str;
         })
       }else if(blueScore < 10 && player[1].name == "" ){
-        var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
+        var newTwit = sentences.oneVone[goalOneCounter];
+        goalOneCounter = (goalOneCounter + 1)%sentences.oneVone.length;
         var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
         console.log(tw);
         T.post('statuses/update', { status:tw}, function(err, data, response) {
