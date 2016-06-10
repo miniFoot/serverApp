@@ -32,10 +32,10 @@
     "C'est la Bérézina... loosingteam passe à côté de son match, à l'image de loosingteam_play1 complètement éteint ce soir.",
     "Quel pion incscrit par scoringteam_play1 ! Une véritable Zlatanerie !",
     "Un énième but encaissé par loosingteam_play1. On frise la correctionnelle ! A-t-il les épaules taillées pour ce challenge ?",
-    ".scoringteam_play1 marche sur l'eau ce soir ! Quel bijou ! Il enfile les buts comme des perles !",
-    ".scoringteam_play1 nous propose un véritable récital... Ce n'est plus du football, c'est de l'art !",
-    ".loosingteam_play1 est à côté de ses pompes ce soir... C'est à se demander s'ils le fait exprès. ",
-    ".scoringteam_play1 ouvre le score ! Il n'a pas perdu de temps. 1 ballon, 1 but. Quelle efficacité redoutable.",
+    "scoringteam_play1 marche sur l'eau ce soir ! Quel bijou ! Il enfile les buts comme des perles !",
+    "scoringteam_play1 nous propose un véritable récital... Ce n'est plus du football, c'est de l'art !",
+    "loosingteam_play1 est à côté de ses pompes ce soir... C'est à se demander s'ils le fait exprès. ",
+    " scoringteam_play1 ouvre le score ! Il n'a pas perdu de temps. 1 ballon, 1 but. Quelle efficacité redoutable.",
     "Roulette ? Pas pour l'arbitre, qui accorde le but à scoringteam_play1 sous les sifflets. ",
     "Quelle bicyclette de scoringteam_play1 ! Ne cherchez plus, c'est l'enfant caché d'Eusebio.",
     "Bon, il serait temps d'indiquer à notre ami loosingteam_play1 qu'il a le droit d'arrêter les tirs. Vraiment.",
@@ -61,6 +61,13 @@
     "red_play1 & red_play2 VS blue_play1 & blue_play2, l'heure de l'explication a sonné ! Allez régler ça au babyfoot !",
     "red_play1 & red_play2 et blue_play1 & blue_play2, l'arbitre a le sifflet à la bouche, coup d'envoi imminent !",
     "red_play1 & red_play2 VS blue_play1 & blue_play2, Le babyfoot vous attend ! à vos barres, prêts, tirez ! "
+  ],
+  "playerCallOne":[
+    "red_play1 VS blue_play1, coup d'envoi imminent au Babyfoot !",
+    "red_play1 et blue_play1, venez en découdre en Gaming Room !",
+    "red_play1 VS blue_play1, l'heure de l'explication a sonné ! Allez régler ça au babyfoot !",
+    "red_play1 et blue_play1, l'arbitre a le sifflet à la bouche, coup d'envoi imminent !",
+    "red_play1 VS blue_play1, Le babyfoot vous attend ! à vos barres, prêts, tirez ! "
   ],
   "endOneGame":[
     "Ce score est sans appel. Magnifique victoire de scoringteam_play1 contre loosingteam_play1",

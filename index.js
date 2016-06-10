@@ -44,7 +44,7 @@ var player = [
         ]
 
 var playerCallCounter = 0;
-
+var playerCallOneCounter = 0;
 
 var replacePlayer = function(sentenceTw){
   if(lastGoalRed){
@@ -115,7 +115,6 @@ io.on('connection', function(socket){
 
   app.post('/newgoal',jsonParser, function(req,res){
     if(playing){
-      console.log(req);
       console.log(" my body ");
       console.log(req.body);
 
@@ -129,9 +128,10 @@ io.on('connection', function(socket){
         lastGoalRed =false ;
       }
       if(blueScore < 10 && redScore < 10){
-        if(player[1].name !=""){
+        if(player[1].name != ""){
           var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
-          var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+          var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+          console.log(tw);
           if(lastGoalRed){
             io.sockets.emit('addGoal', 'red', tw);
           }else{
@@ -142,7 +142,7 @@ io.on('connection', function(socket){
           })
         }else{
           var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
-          var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+          var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
           console.log(tw);
           if(lastGoalRed){
             io.sockets.emit('addGoal', 'red', tw);
@@ -153,23 +153,27 @@ io.on('connection', function(socket){
             lastTweetId = data.id_str;
           })
         }
-      }else if(blueScore >= 10 || redScore >= 10){
-        if(player[1].name !=""){
-          var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
-          var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+      }else{
+        if(player[1].name != ""  && player[3].name != ""){
+          var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
+          var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
           T.post('statuses/update', { status:tw}, function(err, data, response) {
 
           })
+          io.sockets.emit('onStopMatch');
           console.log('stopMatch');
-          socket.emit('onStopMatch');
+
+          resetMatch();
         }else{
-          var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
-          var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+          var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
+          var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
             console.log(tw);
             T.post('statuses/update', { status:tw}, function(err, data, response) {
             })
+            io.sockets.emit('onStopMatch');
             console.log('stopMatch');
-            socket.emit('onStopMatch');
+
+            resetMatch();
           }
       }
 
@@ -190,15 +194,24 @@ io.on('connection', function(socket){
   });
 
   socket.on('onPlayerCall', function(msg){
-    resetMatch();
     if(player[1].name!= "" && player[3].name!= ""){
       var newTwit = sentences.playerCall[playerCallCounter];
       playerCallCounter = (playerCallCounter + 1)%sentences.playerCall.length;
       var tw = replacePlayer(newTwit);
+      console.log(tw);
       console.log(playerCallCounter);
       T.post('statuses/update', { status:tw}, function(err, data, response) {
       })
+    }else if(player[0].name!= "" && player[2].name!= "") {
+      var newTwit = sentences.playerCallOne[playerCallOneCounter];
+      playerCallOneCounter = (playerCallOneCounter + 1)%sentences.playerCallOne.length;
+      var tw = replacePlayer(newTwit);
+      console.log(tw);
+      console.log(playerCallOneCounter);
+      T.post('statuses/update', { status:tw}, function(err, data, response) {
+      })
     }
+    resetMatch();
   });
 
   socket.on('onScoreChanged', function(msg){
@@ -208,20 +221,23 @@ io.on('connection', function(socket){
      lastGoalRed =true;
      if(redScore < 10 && player[1].name != ""){
        var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
-       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+       console.log(tw);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
          lastTweetId = data.id_str;
        })
 
      }else if(redScore < 10 && player[1].name == ""  ){
        var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
-       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+       console.log(tw);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
          lastTweetId = data.id_str;
        })
      }else if(redScore >= 10 && player[1].name != ""){
        var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
-       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+       console.log(tw);
         T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
        resetMatch();
@@ -229,7 +245,8 @@ io.on('connection', function(socket){
 
      }else if(redScore >= 10 ){
        var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
-       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+       console.log(tw);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
          lastTweetId = data.id_str;
        })
@@ -252,27 +269,30 @@ io.on('connection', function(socket){
       lastGoalRed =false;
       if(blueScore < 10 && player[1].name != ""){
         var newTwit = sentences.twoVtwo[(Math.random() * sentences.twoVtwo.length) |0];
-        var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+        var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+        console.log(tw);
         T.post('statuses/update', { status:tw}, function(err, data, response) {
           lastTweetId = data.id_str;
         })
       }else if(blueScore < 10 && player[1].name == "" ){
         var newTwit = sentences.oneVone[(Math.random() * sentences.oneVone.length) |0];
-        var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+        var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+        console.log(tw);
         T.post('statuses/update', { status:tw}, function(err, data, response) {
           lastTweetId = data.id_str;
         })
       }else if(blueScore >= 10 && player[1].name != ""){
        var newTwit = sentences.endTwoGame[(Math.random() * sentences.endTwoGame.length) |0];
-       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+       console.log(tw);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
-         console.log(data);
        })
        socket.emit('onStopMatch');
        resetMatch();
      }else if(blueScore >= 10 ){
        var newTwit = sentences.endOneGame[(Math.random() * sentences.endOneGame.length) |0];
-       var tw = "🔵" + blueScore + " - " + redScore + "🔴" + replacePlayer(newTwit);
+       var tw = "🔵" + blueScore + " - " + redScore + "🔴 " + replacePlayer(newTwit);
+       console.log(tw);
        T.post('statuses/update', { status:tw}, function(err, data, response) {
        })
        socket.emit('onStopMatch');
@@ -317,10 +337,11 @@ io.on('connection', function(socket){
   });
   socket.on('onGoal', function(msg){
     if(redScore >= 10 || blueScore >= 10 ){
-        resetMatch();
+
         socket.emit('onStopMatch', function(msg){
           console.log(msg)
         });
+        resetMatch();
     }
   });
 
