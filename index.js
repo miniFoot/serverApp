@@ -258,8 +258,8 @@ io.on('connection', function(socket){
    if(msg == "minus red" && redScore > 0){
      lastGoalRed =false;
      if(lastTweetId != " "){
-       T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
-         })
+       //T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
+        // })
       console.log("TwId " + lastTweetId);
       }
      redScore -=1;
@@ -302,8 +302,8 @@ io.on('connection', function(socket){
    if(msg == "minus blue" && blueScore > 0){
      lastGoalRed =true;
      if(lastTweetId != " "){
-       T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
-         })
+       //T.post('statuses/destroy/:id', { id: lastTweetId }, function (err, data, response) {
+        // })
       console.log("TwId " + lastTweetId);
     }
      blueScore-=1;
