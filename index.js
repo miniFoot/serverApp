@@ -165,6 +165,11 @@ io.on('connection', function(socket){
           T.post('statuses/update', { status:tw}, function(err, data, response) {
 
           })
+          if(lastGoalRed){
+            io.sockets.emit('addGoal', 'red', tw);
+          }else{
+            io.sockets.emit('addGoal', 'blue', tw);
+          }
           io.sockets.emit('onStopMatch');
           console.log('stopMatch');
 
@@ -175,6 +180,11 @@ io.on('connection', function(socket){
             console.log(tw);
             T.post('statuses/update', { status:tw}, function(err, data, response) {
             })
+            if(lastGoalRed){
+              io.sockets.emit('addGoal', 'red', tw);
+            }else{
+              io.sockets.emit('addGoal', 'blue', tw);
+            }
             io.sockets.emit('onStopMatch');
             console.log('stopMatch');
 
